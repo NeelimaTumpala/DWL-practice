@@ -1,0 +1,75 @@
+---> convert into json and separate payment and buyer
+--->payload
+
+<?xml version='1.0' encoding='UTF-8'?> <order> <product> <price>5</price> <model>MuleSoft Connect 2016</model> </product> 
+<item_amount>3</item_amount> <payment> <payment-type>credit-card</payment-type> <currency>USD</currency> <installments>1</installments> 
+</payment> <buyer> <email>mike@hotmail.com</email> <name>Michael</name> <address>Koala Boulevard 314</address> <city>San Diego</city> <state>CA</state> 
+<postCode>1345</postCode> <nationality>USA</nationality> </buyer> <shop>main branch</shop> <salesperson>Mathew Chow</salesperson> </order>
+
+--->script
+
+%dw 2.0
+output application/json
+---
+{
+    "payment" : payload.order.payment,
+    "buyer" : payload.order.buyer
+}
+
+--->output
+
+{
+  "payment": {
+    "payment-type": "credit-card",
+    "currency": "USD",
+    "installments": "1"
+  },
+  "buyer": {
+    "email": "mike@hotmail.com",
+    "name": "Michael",
+    "address": "Koala Boulevard 314",
+    "city": "San Diego",
+    "state": "CA",
+    "postCode": "1345",
+    "nationality": "USA"
+  }
+}
+
+--->flatten
+
+--->payload
+
+[
+    [
+
+    ],
+    [
+        {"name" : 3},
+        {"name" : 5}
+    ],
+    [
+        {"name" : 3}
+    ]
+]
+
+--->script
+
+%dw 2.0
+output application/json
+---
+flatten(payload)
+
+--->output
+
+[
+  {
+    "name": 3
+  },
+  {
+    "name": 5
+  },
+  {
+    "name": 3
+  }
+]
+
