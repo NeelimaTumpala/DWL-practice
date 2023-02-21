@@ -1,0 +1,20 @@
+qn : replace password of name1 with "****"
+input:
+{"name1":{
+	"name": "Peter Parker",
+	"password": "spiderman"
+}, "name2" :{
+	"name": "Bruce Wayne",
+	"password": "batman"
+}}
+
+
+unsolved answer:
+%dw 2.0
+output application/json
+import * from dw::util::Values
+---
+payload mapObject ( 
+    if (($$ contains "name1") (mask "password" with "****"))
+    else $
+) 
